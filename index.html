@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frame in Goa — HH Goa 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style>
+  :root{
+    --deep:#0f2a1d;
+    --deep2:#0a1d13;
+    --cream:#f8f1de;
+    --card:#fffaef;
+    --ink:#12241a;
+    --coral:#ff5c47;
+    --gold:#f0b23a;
+    --teal:#2c6a54;
+    --line:#d9cfae;
+    --muted-dark:#9db7a4;
+    --muted-light:#7c8a76;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(900px 500px at 50% 0%, rgba(240,178,58,0.10), transparent 60%),
+      var(--deep);
+    background-image:
+      radial-gradient(900px 500px at 50% -6%, rgba(240,178,58,0.12), transparent 60%),
+      repeating-linear-gradient(115deg, rgba(255,255,255,0.02) 0 2px, transparent 2px 26px),
+      linear-gradient(180deg, var(--deep), var(--deep2));
+    color:var(--cream);
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    min-height:100vh;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px 70px;position:relative;z-index:1;}
+
+  /* decorative background stamps */
+  .bg-deco{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0;}
+  .stamp-decal{position:absolute;opacity:0.16;}
+  .stamp-decal.tl{top:-40px;left:-40px;}
+  .stamp-decal.br{bottom:-50px;right:-50px;}
+  @media (max-width:760px){.stamp-decal{display:none;}}
+
+  /* navbar */
+  .navbar{
+    max-width:1180px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:26px 20px;position:relative;z-index:1;
+  }
+  .logo-lockup{display:flex;align-items:center;gap:11px;}
+  .logo-mark{flex-shrink:0;}
+  .logo-word{font-family:'Fraunces',serif;font-weight:700;font-size:17px;letter-spacing:0.01em;color:var(--cream);line-height:1.1;}
+  .logo-word span{display:block;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:9.5px;letter-spacing:0.18em;color:var(--muted-dark);text-transform:uppercase;margin-top:1px;}
+  .navbar .nav-tag{
+    font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted-dark);
+    border:1px solid rgba(255,255,255,0.14);padding:8px 14px;border-radius:999px;
+  }
+  .navbar .nav-tag b{color:var(--gold);font-weight:600;}
+
+  /* header */
+  header.hero{text-align:center;margin-bottom:38px;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:11.5px;letter-spacing:0.22em;text-transform:uppercase;
+    color:var(--gold);border:1px solid rgba(240,178,58,0.4);
+    padding:7px 16px;border-radius:999px;margin-bottom:22px;
+  }
+  .eyebrow::before{content:'☼';font-size:13px;}
+  h1.title{
+    font-family:'Fraunces', serif;
+    font-weight:900;
+    font-style:normal;
+    font-size:clamp(40px,7vw,78px);
+    line-height:0.98;
+    margin:0 0 14px;
+    letter-spacing:-0.01em;
+    color:var(--cream);
+  }
+  h1.title em{
+    font-style:italic;
+    font-weight:600;
+    color:var(--coral);
+    -webkit-text-stroke:1px rgba(255,92,71,0.5);
+  }
+  p.deck{
+    color:var(--muted-dark);
+    font-size:14.5px;
+    max-width:52ch;
+    margin:0 auto 30px;
+    line-height:1.65;
+  }
+  .mode-toggle{
+    display:inline-flex;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:999px;
+    padding:5px;
+    gap:4px;
+  }
+  .mode-toggle button{
+    background:transparent;border:none;color:var(--muted-dark);
+    font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;
+    letter-spacing:0.08em;text-transform:uppercase;
+    padding:11px 24px;border-radius:999px;cursor:pointer;
+    transition:all .15s ease;
+  }
+  .mode-toggle button.active{background:var(--gold);color:#241505;}
+
+  /* grid */
+  .grid{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:28px;align-items:start;margin-top:40px;}
+  @media (max-width:920px){.grid{grid-template-columns:1fr;}}
+
+  .panel{
+    background:var(--card);
+    color:var(--ink);
+    border-radius:20px;
+    padding:24px;
+    box-shadow:0 26px 60px -24px rgba(0,0,0,0.55);
+  }
+  .panel h2{
+    font-family:'Fraunces',serif;font-weight:700;font-size:16px;
+    margin:0 0 4px;color:var(--ink);
+  }
+  .panel .sub{font-size:11.5px;color:var(--muted-light);margin-bottom:16px;letter-spacing:0.02em;}
+
+  label{
+    display:block;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--muted-light);margin:16px 0 7px;font-weight:600;
+  }
+  label:first-of-type{margin-top:0;}
+  input[type=text], textarea, input[type=url]{
+    width:100%;background:#fff;border:1.5px solid var(--line);border-radius:10px;
+    color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:13px;
+    padding:11px 12px;outline:none;transition:border-color .15s ease;
+  }
+  input[type=text]:focus, textarea:focus, input[type=url]:focus{border-color:var(--coral);}
+  textarea{resize:vertical;min-height:52px;line-height:1.5;}
+  .hint{font-size:11px;color:var(--muted-light);margin-top:6px;line-height:1.5;}
+
+  .upload-box{
+    border:2px dashed var(--line);border-radius:14px;padding:22px;text-align:center;
+    cursor:pointer;transition:border-color .15s ease, background .15s ease;position:relative;
+    background:#fffdf6;
+  }
+  .upload-box:hover, .upload-box.drag{border-color:var(--coral);background:#fff3ef;}
+  .upload-box input{display:none;}
+  .upload-box .up-icon{font-size:22px;margin-bottom:6px;}
+  .upload-box .up-title{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:3px;}
+  .upload-box .up-text{font-size:11px;color:var(--muted-light);}
+  .upload-box.has-img{display:flex;align-items:center;gap:12px;padding:10px 14px;text-align:left;}
+  .upload-box img.thumb{width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);}
+
+  .zoom-row{display:flex;align-items:center;gap:12px;}
+  input[type=range]{
+    -webkit-appearance:none;flex:1;height:4px;border-radius:4px;
+    background:var(--line);outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:18px;height:18px;border-radius:50%;
+    background:var(--coral);border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.3);cursor:pointer;
+  }
+  .ghost-btn{
+    width:100%;background:transparent;border:1.5px solid var(--teal);color:var(--teal);
+    border-radius:10px;padding:11px;font-family:'JetBrains Mono',monospace;font-size:11.5px;
+    font-weight:700;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;margin-top:14px;
+  }
+  .ghost-btn:hover{background:var(--teal);color:#fff;}
+
+  .skills-input{
+    display:flex;flex-wrap:wrap;gap:7px;background:#fff;border:1.5px solid var(--line);
+    border-radius:10px;padding:9px;
+  }
+  .skills-input input{flex:1;min-width:90px;border:none;background:transparent;color:var(--ink);
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;padding:5px;outline:none;}
+  .pill{
+    display:inline-flex;align-items:center;gap:6px;background:#fdeee0;
+    border:1px solid #f0c9a0;color:#a85a1a;font-size:11px;letter-spacing:0.02em;
+    padding:6px 10px;border-radius:999px;text-transform:uppercase;font-weight:600;
+  }
+  .pill button{background:none;border:none;color:#a85a1a;cursor:pointer;font-size:13px;line-height:1;padding:0;opacity:0.6;}
+  .pill button:hover{opacity:1;}
+
+  .actions{display:flex;gap:10px;margin-top:18px;}
+  .btn{
+    flex:1;border:none;border-radius:12px;padding:14px 12px;
+    font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;
+    letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:7px;
+    transition:transform .1s ease, opacity .15s ease;
+  }
+  .btn:active{transform:scale(0.98);}
+  .btn-primary{background:var(--coral);color:#2a0a05;}
+  .btn-primary:disabled{opacity:0.4;cursor:not-allowed;}
+  .btn-secondary{background:var(--ink);color:var(--cream);}
+  .foot-note{font-size:10.5px;color:var(--muted-light);margin-top:14px;line-height:1.6;text-align:center;}
+  .foot-note b{color:var(--coral);}
+
+  /* preview */
+  .preview-col{position:sticky;top:20px;display:flex;flex-direction:column;align-items:center;gap:16px;}
+  #stage-wrap{
+    width:100%;max-width:440px;border-radius:26px;overflow:hidden;
+    box-shadow:0 34px 80px -20px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.06);
+    background:var(--deep2);
+  }
+  #stage{width:100%;height:100%;display:block;touch-action:none;}
+  .drag-hint{font-size:10.5px;color:var(--muted-dark);text-align:center;letter-spacing:0.03em;}
+  ::selection{background:var(--gold);color:#1a0d06;}
+</style>
+</head>
+<body>
+
+<div class="bg-deco" aria-hidden="true">
+  <svg class="stamp-decal tl" width="220" height="220" viewBox="0 0 220 220">
+    <defs><path id="arcTL" d="M 30 110 A 80 80 0 0 1 190 110"/></defs>
+    <circle cx="110" cy="110" r="80" fill="none" stroke="#f0b23a" stroke-width="2" stroke-dasharray="2 9"/>
+    <circle cx="110" cy="110" r="58" fill="none" stroke="#f8f1de" stroke-width="1.5" stroke-dasharray="1 7"/>
+    <text font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" letter-spacing="3" fill="#f8f1de">
+      <textPath href="#arcTL" startOffset="50%" text-anchor="middle">HACKER HOUSE · GOA</textPath>
+    </text>
+  </svg>
+  <svg class="stamp-decal br" width="220" height="220" viewBox="0 0 220 220">
+    <defs><path id="arcBR" d="M 30 110 A 80 80 0 0 1 190 110"/></defs>
+    <circle cx="110" cy="110" r="80" fill="none" stroke="#ff5c47" stroke-width="2" stroke-dasharray="2 9"/>
+    <circle cx="110" cy="110" r="58" fill="none" stroke="#f8f1de" stroke-width="1.5" stroke-dasharray="1 7"/>
+    <text font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" letter-spacing="3" fill="#f8f1de">
+      <textPath href="#arcBR" startOffset="50%" text-anchor="middle">REPEAT · BUILD · SHIP</textPath>
+    </text>
+  </svg>
+</div>
+
+<nav class="navbar">
+  <div class="logo-lockup">
+    <svg class="logo-mark" width="38" height="38" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#f0b23a" stroke-width="2" stroke-dasharray="3 5"/>
+      <circle cx="20" cy="16" r="7" fill="#ff5c47"/>
+      <path d="M8 28 Q14 24 20 28 T32 28" stroke="#2c6a54" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="logo-word">Frame in Goa<span>Builder Studio</span></div>
+  </div>
+  <div class="nav-tag">HH Goa <b>2026</b></div>
+</nav>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">Goa, India · 28–31 Oct 2026</div>
+    <h1 class="title">Frame yourself <em>in Goa</em></h1>
+    <p class="deck">Upload a photo, get a postmarked Builder ID or a round PFP frame stamped for Hacker House Goa 2026. Everything renders on your device — nothing gets uploaded anywhere.</p>
+    <div class="mode-toggle">
+      <button id="mode-pfp" class="active">PFP Frame</button>
+      <button id="mode-id">Builder ID</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div class="controls-col">
+
+      <div class="panel">
+        <h2>Your photo</h2>
+        <div class="sub">Drop a square-ish photo — you can drag and zoom it after.</div>
+        <div class="upload-box" id="photo-upload">
+          <input type="file" id="photo-file" accept="image/*">
+          <div class="up-icon">📷</div>
+          <div class="up-title">Click or drop a photo</div>
+          <div class="up-text">JPG, PNG, WEBP</div>
+        </div>
+
+        <label style="margin-top:18px;">Zoom &amp; position</label>
+        <div class="zoom-row">
+          <span style="font-size:15px;">–</span>
+          <input type="range" id="zoom-slider" min="100" max="260" value="100" step="2">
+          <span style="font-size:15px;">+</span>
+        </div>
+        <div class="hint">Drag the photo inside the frame on the right to reposition it.</div>
+        <button class="ghost-btn" id="recenter-btn" type="button">↺ Reset position</button>
+      </div>
+
+      <div class="panel" id="id-panel" style="display:none;margin-top:18px;">
+        <h2>Builder details</h2>
+        <div class="sub">Shown on your Builder ID card.</div>
+
+        <label>Name</label>
+        <input type="text" id="id-name" placeholder="e.g. Sushanth" maxlength="40">
+
+        <label>Role</label>
+        <input type="text" id="id-role" placeholder="e.g. Frontend Engineer" maxlength="40">
+
+        <label>Skills / stack — up to 6</label>
+        <div class="skills-input" id="skills-box">
+          <input type="text" id="skills-input" placeholder="Type a skill, press Enter">
+        </div>
+
+        <label>One-line overview</label>
+        <textarea id="id-bio" maxlength="90" placeholder="What are you here to build?"></textarea>
+
+        <label>QR destination</label>
+        <input type="url" id="qr-link" placeholder="https://x.com/yourhandle" value="https://hhgoa.com">
+        <div class="hint">Defaults to hhgoa.com — point it at your X profile or portfolio instead.</div>
+      </div>
+
+      <div class="panel" style="margin-top:18px;">
+        <div class="actions">
+          <button class="btn btn-primary" id="download-btn">⬇ Download</button>
+          <button class="btn btn-secondary" id="share-btn">𝕏 Share</button>
+        </div>
+        <div class="foot-note">Tag <b>#FrameInGoa</b> when you post it.</div>
+      </div>
+
+    </div>
+
+    <div class="preview-col">
+      <div id="stage-wrap">
+        <canvas id="stage" width="1080" height="1080"></canvas>
+      </div>
+      <div class="drag-hint">drag the photo to reposition · use the slider to zoom</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  const state = {
+    mode: "pfp",
+    photo: { img:null, panX:0, panY:0, zoom:1 },
+    id: { name:"", role:"", skills:[], bio:"" },
+    qrLink: "https://hhgoa.com",
+    builderClass: ""
+  };
+
+  const canvas = document.getElementById('stage');
+  const ctx = canvas.getContext('2d');
+
+  const C = {
+    deep:'#0f2a1d', deep2:'#0a1d13', cream:'#f8f1de', card:'#fffaef',
+    ink:'#12241a', coral:'#ff5c47', gold:'#f0b23a', teal:'#2c6a54', line:'rgba(248,241,222,0.18)'
+  };
+
+  /* ---------- builder class generator ---------- */
+  const CLASS_PREFIX = ["Wave-Riding","Late-Night","Full-Stack","Zero-to-One","Sunrise","Mainnet","Sandbar","Reef-Diving","Palm-Shaded","Offline-First","High-Tide","Monsoon-Proof","Terminal-Bound","Beachfront","Undefeated"];
+  const CLASS_ROLE_MAP = {
+    frontend:["Interface Alchemist","Pixel Wrangler","Component Smith"],
+    backend:["Systems Architect","API Whisperer","Uptime Guardian"],
+    fullstack:["Full-Stack Alchemist","End-to-End Operator","Stack Whisperer"],
+    designer:["Design Shaman","Pixel Perfectionist","Visual Architect"],
+    product:["Roadmap Captain","Product Shaman","Scope Slayer"],
+    "ml engineer":["Model Whisperer","Gradient Chaser","Inference Alchemist"],
+    "ai engineer":["Model Whisperer","Gradient Chaser","Inference Alchemist"],
+    "data scientist":["Signal Hunter","Model Whisperer","Insight Miner"],
+    "smart contract":["Contract Alchemist","Onchain Architect","Gas Optimizer"],
+    "blockchain developer":["Onchain Architect","Chain Hopper","Contract Alchemist"],
+    solidity:["Contract Alchemist","Gas Optimizer","Onchain Architect"],
+    marketer:["Growth Sorcerer","Narrative Architect","Signal Booster"],
+    growth:["Growth Sorcerer","Narrative Architect","Signal Booster"],
+    founder:["Vision Captain","Zero-to-One Operator","Chaos Coordinator"],
+    devops:["Uptime Guardian","Pipeline Architect","Infra Alchemist"],
+    security:["Threat Hunter","Exploit Slayer","Vuln Whisperer"],
+    default:["Builder","Ship Captain","Idea Alchemist","Momentum Engineer"]
+  };
+  function hashStr(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return Math.abs(h);}
+  function roleKey(role){const r=(role||"").toLowerCase();for(const k of Object.keys(CLASS_ROLE_MAP)){if(k!=="default"&&r.includes(k))return k;}return "default";}
+  function generateBuilderClass(name, role, skills){
+    const seed=(name||"")+"|"+(role||"")+"|"+(skills||[]).join(",");
+    const h=hashStr(seed||"hh-goa-2026");
+    const key=roleKey(role);
+    const pool=CLASS_ROLE_MAP[key];
+    const prefix=CLASS_PREFIX[h%CLASS_PREFIX.length];
+    const noun=pool[Math.floor(h/7)%pool.length];
+    let tag="";
+    if(skills&&skills.length) tag=" ("+skills[h%skills.length]+"-pilled)";
+    return (prefix+" "+noun+tag).toUpperCase();
+  }
+  function refreshBuilderClass(){
+    if(!state.id.name && !state.id.role){ state.builderClass=""; }
+    else { state.builderClass = generateBuilderClass(state.id.name, state.id.role, state.id.skills); }
+    render();
+  }
+
+  /* ---------- canvas helpers ---------- */
+  function roundRect(x,y,w,h,r){
+    if(typeof r==='number') r={tl:r,tr:r,br:r,bl:r};
+    ctx.beginPath();
+    ctx.moveTo(x+r.tl,y);
+    ctx.lineTo(x+w-r.tr,y);
+    ctx.arcTo(x+w,y,x+w,y+r.tr,r.tr);
+    ctx.lineTo(x+w,y+h-r.br);
+    ctx.arcTo(x+w,y+h,x+w-r.br,y+h,r.br);
+    ctx.lineTo(x+r.bl,y+h);
+    ctx.arcTo(x,y+h,x,y+h-r.bl,r.bl);
+    ctx.lineTo(x,y+r.tl);
+    ctx.arcTo(x,y,x+r.tl,y,r.tl);
+    ctx.closePath();
+  }
+
+  function drawPhotoCircle(cx,cy,d){
+    const r=d/2;
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx,cy,r,0,Math.PI*2);
+    ctx.closePath();
+    ctx.clip();
+    const p = state.photo;
+    if(p.img){
+      const iw=p.img.width, ih=p.img.height;
+      const base = Math.max(d/iw, d/ih) * (p.zoom||1);
+      const dw=iw*base, dh=ih*base;
+      ctx.drawImage(p.img, cx-dw/2+p.panX, cy-dh/2+p.panY, dw, dh);
+    } else {
+      ctx.fillStyle=C.card;
+      ctx.fillRect(cx-r,cy-r,d,d);
+      ctx.fillStyle='#c9bd9a';
+      ctx.font='600 '+(d*0.16)+'px "JetBrains Mono", monospace';
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText('ADD PHOTO', cx, cy);
+    }
+    ctx.restore();
+  }
+
+  function circularText(text, cx, cy, radius, startAngle, clockwise, font, color, spacing){
+    ctx.save();
+    ctx.translate(cx,cy);
+    ctx.rotate(startAngle);
+    ctx.font=font;
+    ctx.fillStyle=color;
+    ctx.textBaseline='middle';
+    ctx.textAlign='center';
+    let str = text;
+    if(!clockwise) str = str.split('').reverse().join('');
+    for(let i=0;i<str.length;i++){
+      const ch=str[i];
+      const w=ctx.measureText(ch).width + (spacing||0);
+      const ang = (w/radius) * (clockwise?1:-1);
+      ctx.rotate(ang/2);
+      ctx.save();
+      ctx.translate(0, -radius);
+      if(!clockwise) ctx.rotate(Math.PI);
+      ctx.fillText(ch,0,0);
+      ctx.restore();
+      ctx.rotate(ang/2);
+    }
+    ctx.restore();
+  }
+
+  function measureArcAngle(text, font, spacing, radius){
+    ctx.save(); ctx.font=font;
+    let total=0;
+    for(const ch of text){ total += (ctx.measureText(ch).width+(spacing||0))/radius; }
+    ctx.restore();
+    return total;
+  }
+
+  function drawCenteredArcText(text, cx, cy, radius, centerAngle, clockwise, font, color, spacing){
+    const total = measureArcAngle(text, font, spacing, radius);
+    const start = clockwise ? centerAngle - total/2 : centerAngle + total/2;
+    circularText(text, cx, cy, radius, start, clockwise, font, color, spacing);
+  }
+
+  function wrapText(text, maxWidth){
+    const words=(text||"").split(/\s+/).filter(Boolean);
+    const lines=[]; let cur="";
+    for(const w of words){
+      const test = cur? cur+" "+w : w;
+      if(ctx.measureText(test).width>maxWidth && cur){lines.push(cur);cur=w;}
+      else cur=test;
+    }
+    if(cur) lines.push(cur);
+    return lines;
+  }
+
+  function drawPillsCentered(items, cy, maxRowWidth){
+    const font='600 22px "JetBrains Mono", monospace';
+    const padX=18, padY=12, gap=12, lineGap=14;
+    ctx.font=font; ctx.textBaseline='middle';
+    const rows=[]; let row=[]; let rowWidth=0;
+    for(const it of items){
+      const tw=ctx.measureText(it).width+padX*2;
+      const addW= row.length? tw+gap : tw;
+      if(rowWidth+addW>maxRowWidth && row.length){rows.push(row);row=[it];rowWidth=tw;}
+      else{row.push(it);rowWidth+=addW;}
+    }
+    if(row.length) rows.push(row);
+    const pillH=44;
+    let y=cy;
+    for(const r of rows){
+      const widths=r.map(it=>ctx.measureText(it).width+padX*2);
+      const totalW=widths.reduce((a,b)=>a+b,0)+gap*(r.length-1);
+      let x=canvas.width/2 - totalW/2;
+      for(let i=0;i<r.length;i++){
+        const w=widths[i];
+        roundRect(x,y-pillH/2,w,pillH,pillH/2);
+        ctx.fillStyle='#fdeee0'; ctx.fill();
+        ctx.lineWidth=2; ctx.strokeStyle='#f0c9a0'; ctx.stroke();
+        ctx.fillStyle='#a85a1a'; ctx.textAlign='center';
+        ctx.fillText(r[i], x+w/2, y+1);
+        x+=w+gap;
+      }
+      y+=pillH+lineGap;
+    }
+    return y-lineGap;
+  }
+
+  function drawLogoMark(cx,cy,r){
+    ctx.save();
+    ctx.setLineDash([2,6]);
+    ctx.strokeStyle=C.gold; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.beginPath(); ctx.arc(cx,cy-r*0.18,r*0.36,0,Math.PI*2);
+    ctx.fillStyle=C.coral; ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(cx-r*0.62,cy+r*0.42);
+    ctx.quadraticCurveTo(cx-r*0.25,cy+r*0.18,cx,cy+r*0.42);
+    ctx.quadraticCurveTo(cx+r*0.25,cy+r*0.66,cx+r*0.62,cy+r*0.42);
+    ctx.strokeStyle=C.teal; ctx.lineWidth=r*0.14; ctx.lineCap='round'; ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawPalm(x,y,scale,flip){
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.scale(flip?-scale:scale, scale);
+    ctx.strokeStyle=C.cream; ctx.lineWidth=9; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.quadraticCurveTo(-6,-80,0,-150); ctx.stroke();
+    const leaves=[[-110,-60],[-125,-20],[-110,20],[-60,55],[5,60]];
+    leaves.forEach(([ex,ey])=>{
+      ctx.beginPath(); ctx.moveTo(0,-150);
+      ctx.quadraticCurveTo(ex/2, -150+(ey+150)/2-18, ex, ey);
+      ctx.stroke();
+    });
+    ctx.restore();
+  }
+
+  /* ---------- QR ---------- */
+  let qrCache={key:null,canvas:null};
+  function getQRCanvas(text){
+    if(qrCache.key===text) return qrCache.canvas;
+    let qr;
+    try{ qr=qrcode(0,'M'); qr.addData(text||"https://hhgoa.com"); qr.make(); }
+    catch(e){ qr=qrcode(4,'L'); qr.addData("https://hhgoa.com"); qr.make(); }
+    const count=qr.getModuleCount(); const scale=8;
+    const off=document.createElement('canvas'); off.width=count*scale; off.height=count*scale;
+    const octx=off.getContext('2d');
+    octx.fillStyle='#fffaef'; octx.fillRect(0,0,off.width,off.height);
+    octx.fillStyle='#12241a';
+    for(let r=0;r<count;r++) for(let c=0;c<count;c++) if(qr.isDark(r,c)) octx.fillRect(c*scale,r*scale,scale,scale);
+    qrCache={key:text,canvas:off};
+    return off;
+  }
+  function drawQR(x,y,size,link){
+    roundRect(x-14,y-14,size+28,size+28,14);
+    ctx.fillStyle=C.card; ctx.fill();
+    ctx.drawImage(getQRCanvas(link), x, y, size, size);
+    const b=20, off=16, lw=5;
+    ctx.strokeStyle=C.gold; ctx.lineWidth=lw; ctx.lineCap='round';
+    [[x-off,y-off,[[b,0],[0,b]]],[x+size+off,y-off,[[-b,0],[0,b]]],
+     [x-off,y+size+off,[[b,0],[0,-b]]],[x+size+off,y+size+off,[[-b,0],[0,-b]]]
+    ].forEach(([cx0,cy0,arms])=>{
+      arms.forEach(([dx,dy])=>{ ctx.beginPath(); ctx.moveTo(cx0,cy0); ctx.lineTo(cx0+dx,cy0+dy); ctx.stroke(); });
+    });
+  }
+
+  /* ---------- shared chrome ---------- */
+  function drawBaseBackground(w,h){
+    const g=ctx.createLinearGradient(0,0,0,h);
+    g.addColorStop(0,C.deep); g.addColorStop(1,C.deep2);
+    ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+    const glow=ctx.createRadialGradient(w/2,h*0.42,20,w/2,h*0.42,w*0.7);
+    glow.addColorStop(0,'rgba(240,178,58,0.16)');
+    glow.addColorStop(0.55,'rgba(255,92,71,0.06)');
+    glow.addColorStop(1,'rgba(15,42,29,0)');
+    ctx.fillStyle=glow; ctx.fillRect(0,0,w,h);
+    ctx.save(); ctx.globalAlpha=0.10;
+    ctx.strokeStyle=C.cream; ctx.lineWidth=2;
+    for(let i=-h;i<w+h;i+=34){
+      ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i+h,h); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  /* ---------- PFP render ---------- */
+  function renderPFP(){
+    canvas.width=1080; canvas.height=1080;
+    const W=1080,H=1080;
+    drawBaseBackground(W,H);
+
+    ctx.save(); ctx.globalAlpha=0.14;
+    drawPalm(70,H-30,1,false); drawPalm(W-70,H-30,1,true);
+    ctx.restore();
+
+    drawLogoMark(78,80,34);
+
+    // eyebrow badge
+    ctx.textAlign='center';
+    roundRect(W/2-190,52,380,46,23);
+    ctx.fillStyle='rgba(240,178,58,0.14)'; ctx.fill();
+    ctx.strokeStyle='rgba(240,178,58,0.5)'; ctx.lineWidth=2; ctx.stroke();
+    ctx.font='700 18px "JetBrains Mono", monospace'; ctx.fillStyle=C.gold; ctx.textBaseline='middle';
+    ctx.fillText('GOA · 28–31 OCT 2026', W/2, 76);
+
+    const cx=W/2, cy=560, outerR=340, ringR=300, photoD=520;
+
+    // outer dashed postmark ring
+    ctx.save();
+    ctx.setLineDash([4,14]);
+    ctx.strokeStyle='rgba(248,241,222,0.35)';
+    ctx.lineWidth=2;
+    ctx.beginPath(); ctx.arc(cx,cy,outerR,0,Math.PI*2); ctx.stroke();
+    ctx.restore();
+
+    // colored ring behind photo
+    ctx.beginPath(); ctx.arc(cx,cy,photoD/2+16,0,Math.PI*2);
+    ctx.fillStyle=C.gold; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx,cy,photoD/2+8,0,Math.PI*2);
+    ctx.fillStyle=C.deep2; ctx.fill();
+
+    drawPhotoCircle(cx,cy,photoD);
+
+    // arc text top + bottom, centered so they never collide
+    drawCenteredArcText('HACKER HOUSE · GOA 2026', cx, cy, ringR, 0, true, '700 30px "JetBrains Mono", monospace', C.cream, 6);
+    drawCenteredArcText('REPEAT · BUILD · SHIP', cx, cy, ringR, Math.PI, false, '700 30px "JetBrains Mono", monospace', C.coral, 6);
+
+    // stars decoration
+    ctx.fillStyle=C.gold; ctx.font='24px sans-serif';
+    ctx.fillText('✦', cx-ringR, cy-6);
+    ctx.fillStyle=C.coral;
+    ctx.fillText('✦', cx+ringR, cy-6);
+
+    // ribbon bottom
+    ctx.save();
+    ctx.translate(W/2, H-92);
+    ctx.rotate(-0.02);
+    roundRect(-190,-30,380,60,10);
+    ctx.fillStyle=C.coral; ctx.fill();
+    ctx.font='800 26px "Fraunces", serif'; ctx.fillStyle='#2a0a05'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('#FRAMEINGOA', 0, 2);
+    ctx.restore();
+
+    // timestamp
+    ctx.textAlign='right';
+    ctx.font='600 18px "JetBrains Mono", monospace'; ctx.fillStyle=C.gold;
+    ctx.fillText(nowStamp(), W-46, H-40);
+  }
+
+  function nowStamp(){
+    const d=new Date();
+    let h=d.getHours(); const m=String(d.getMinutes()).padStart(2,'0');
+    const ap=h>=12?'PM':'AM'; h=h%12; if(h===0)h=12;
+    return h+':'+m+' '+ap+' STUDIO';
+  }
+
+  /* ---------- Builder ID render ---------- */
+  function renderID(){
+    canvas.width=1080; canvas.height=1350;
+    const W=1080,H=1350;
+    drawBaseBackground(W,H);
+
+    ctx.save(); ctx.globalAlpha=0.08;
+    drawPalm(60,H-36,1,false); drawPalm(W-60,H-36,1,true);
+    ctx.restore();
+
+    // perforation row
+    ctx.fillStyle='rgba(248,241,222,0.4)';
+    const n=28, margin=54, gap=(W-margin*2)/(n-1);
+    for(let i=0;i<n;i++){ ctx.beginPath(); ctx.arc(margin+i*gap,44,4,0,Math.PI*2); ctx.fill(); }
+
+    drawLogoMark(76,78,32);
+
+    ctx.textAlign='center';
+    ctx.font='700 20px "JetBrains Mono", monospace'; ctx.fillStyle=C.gold;
+    ctx.fillText('BUILDER ID · GOA 2026', W/2, 96);
+
+    ctx.font='900 58px "Fraunces", serif'; ctx.fillStyle=C.cream;
+    ctx.fillText('Frame in ', W/2-70, 156);
+    ctx.font='italic 600 58px "Fraunces", serif'; ctx.fillStyle=C.coral;
+    ctx.fillText('Goa', W/2+150, 156);
+
+    const cx=W/2, cy=400, ringD=300;
+    ctx.beginPath(); ctx.arc(cx,cy,ringD/2+14,0,Math.PI*2); ctx.fillStyle=C.gold; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx,cy,ringD/2+6,0,Math.PI*2); ctx.fillStyle=C.deep2; ctx.fill();
+    drawPhotoCircle(cx,cy,ringD);
+
+    let y=cy+ringD/2+72;
+    ctx.font='800 50px "Fraunces", serif'; ctx.fillStyle=C.cream;
+    ctx.fillText(state.id.name||'YOUR NAME', W/2, y);
+
+    y+=44;
+    ctx.font='600 23px "JetBrains Mono", monospace'; ctx.fillStyle=C.gold;
+    ctx.fillText((state.id.role||'YOUR ROLE').toUpperCase(), W/2, y);
+
+    y+=42;
+    if(state.builderClass){
+      ctx.font='700 17px "JetBrains Mono", monospace'; ctx.fillStyle=C.coral;
+      ctx.fillText('✦ '+state.builderClass+' ✦', W/2, y);
+      y+=38;
+    } else { y+=6; }
+
+    if(state.id.skills.length){ y=drawPillsCentered(state.id.skills, y+14, W-160)+18; }
+    else { y+=26; }
+
+    if(state.id.bio){
+      ctx.font='500 21px "JetBrains Mono", monospace'; ctx.fillStyle=C.cream; ctx.globalAlpha=0.85;
+      wrapText(state.id.bio, W-200).slice(0,2).forEach((line,i)=>ctx.fillText(line, W/2, y+i*30));
+      ctx.globalAlpha=1;
+    }
+
+    // footer
+    const fy=H-220;
+    ctx.save(); ctx.setLineDash([10,10]); ctx.strokeStyle='rgba(248,241,222,0.25)'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(70,fy); ctx.lineTo(W-70,fy); ctx.stroke(); ctx.restore();
+
+    ctx.textAlign='left';
+    ctx.font='700 21px "JetBrains Mono", monospace'; ctx.fillStyle=C.coral;
+    ctx.fillText('#FrameInGoa', 54, fy+50);
+    ctx.font='500 15px "JetBrains Mono", monospace'; ctx.fillStyle=C.gold;
+    ctx.fillText(nowStamp(), 54, fy+78);
+    ctx.fillStyle='rgba(248,241,222,0.6)';
+    ctx.fillText('AI × CRYPTO · MULTICHAIN', 54, fy+100);
+
+    drawQR(W-54-150, fy+18, 150, state.qrLink);
+  }
+
+  function render(){ if(state.mode==='pfp') renderPFP(); else renderID(); }
+
+  /* ---------- fonts ready ---------- */
+  function waitFonts(cb){
+    if(document.fonts && document.fonts.ready){
+      Promise.all([
+        document.fonts.load('900 58px "Fraunces"'),
+        document.fonts.load('italic 600 58px "Fraunces"'),
+        document.fonts.load('700 23px "JetBrains Mono"')
+      ]).then(()=>document.fonts.ready).then(cb).catch(cb);
+    } else cb();
+  }
+
+  /* ================= UI WIRING ================= */
+  function readFileAsImage(file, cb){
+    const reader=new FileReader();
+    reader.onload=e=>{ const img=new Image(); img.onload=()=>cb(img); img.src=e.target.result; };
+    reader.readAsDataURL(file);
+  }
+
+  const uploadBox=document.getElementById('photo-upload');
+  const fileInput=document.getElementById('photo-file');
+  function handleFiles(files){
+    if(!files||!files[0]) return;
+    readFileAsImage(files[0], img=>{
+      state.photo.img=img; state.photo.panX=0; state.photo.panY=0; state.photo.zoom=1;
+      document.getElementById('zoom-slider').value=100;
+      uploadBox.classList.add('has-img');
+      uploadBox.innerHTML='';
+      const thumb=document.createElement('img'); thumb.className='thumb'; thumb.src=img.src;
+      const txt=document.createElement('div');
+      txt.innerHTML='<div class="up-title">Photo added</div><div class="up-text">Click to change</div>';
+      uploadBox.appendChild(thumb); uploadBox.appendChild(txt); uploadBox.appendChild(fileInput);
+      render();
+    });
+  }
+  fileInput.addEventListener('change', ()=>handleFiles(fileInput.files));
+  uploadBox.addEventListener('click', ()=>fileInput.click());
+  ['dragover','dragenter'].forEach(ev=>uploadBox.addEventListener(ev,e=>{e.preventDefault();uploadBox.classList.add('drag');}));
+  ['dragleave','drop'].forEach(ev=>uploadBox.addEventListener(ev,e=>{e.preventDefault();uploadBox.classList.remove('drag');}));
+  uploadBox.addEventListener('drop', e=>{ e.preventDefault(); handleFiles(e.dataTransfer.files); });
+
+  // zoom
+  const zoomSlider=document.getElementById('zoom-slider');
+  zoomSlider.addEventListener('input', ()=>{ state.photo.zoom=zoomSlider.value/100; render(); });
+  document.getElementById('recenter-btn').addEventListener('click', ()=>{
+    state.photo.panX=0; state.photo.panY=0; state.photo.zoom=1; zoomSlider.value=100; render();
+  });
+
+  // drag to pan on canvas
+  let dragging=false, lastX=0, lastY=0;
+  canvas.addEventListener('pointerdown', e=>{
+    if(!state.photo.img) return;
+    dragging=true; lastX=e.clientX; lastY=e.clientY;
+    canvas.setPointerCapture(e.pointerId); canvas.style.cursor='grabbing';
+  });
+  canvas.addEventListener('pointermove', e=>{
+    if(!dragging) return;
+    const rect=canvas.getBoundingClientRect();
+    const scale=canvas.width/rect.width;
+    state.photo.panX += (e.clientX-lastX)*scale;
+    state.photo.panY += (e.clientY-lastY)*scale;
+    lastX=e.clientX; lastY=e.clientY;
+    render();
+  });
+  window.addEventListener('pointerup', ()=>{ dragging=false; canvas.style.cursor = state.photo.img?'grab':'default'; });
+
+  // mode toggle
+  const modePfpBtn=document.getElementById('mode-pfp');
+  const modeIdBtn=document.getElementById('mode-id');
+  const idPanel=document.getElementById('id-panel');
+  function setMode(m){
+    state.mode=m;
+    modePfpBtn.classList.toggle('active', m==='pfp');
+    modeIdBtn.classList.toggle('active', m==='id');
+    idPanel.style.display = m==='id' ? 'block':'none';
+    render();
+  }
+  modePfpBtn.addEventListener('click', ()=>setMode('pfp'));
+  modeIdBtn.addEventListener('click', ()=>setMode('id'));
+
+  // id fields
+  const idName=document.getElementById('id-name');
+  const idRole=document.getElementById('id-role');
+  const idBio=document.getElementById('id-bio');
+  idName.addEventListener('input', ()=>{ state.id.name=idName.value; refreshBuilderClass(); });
+  idRole.addEventListener('input', ()=>{ state.id.role=idRole.value; refreshBuilderClass(); });
+  idBio.addEventListener('input', ()=>{ state.id.bio=idBio.value; render(); });
+
+  const skillsBox=document.getElementById('skills-box');
+  const skillsInput=document.getElementById('skills-input');
+  function renderSkillPills(){
+    Array.from(skillsBox.querySelectorAll('.pill')).forEach(p=>p.remove());
+    state.id.skills.forEach((s,i)=>{
+      const pill=document.createElement('span'); pill.className='pill';
+      pill.innerHTML=`<span>${s}</span>`;
+      const rm=document.createElement('button'); rm.type='button'; rm.textContent='×';
+      rm.addEventListener('click', ()=>{ state.id.skills.splice(i,1); renderSkillPills(); refreshBuilderClass(); });
+      pill.appendChild(rm);
+      skillsBox.insertBefore(pill, skillsInput);
+    });
+  }
+  function addSkillFromInput(){
+    const v=skillsInput.value.trim();
+    if(v && state.id.skills.length<6 && !state.id.skills.includes(v)){
+      state.id.skills.push(v); renderSkillPills(); refreshBuilderClass();
+    }
+    skillsInput.value='';
+  }
+  skillsInput.addEventListener('keydown', e=>{
+    if(e.key==='Enter'||e.key===','){ e.preventDefault(); addSkillFromInput(); }
+    else if(e.key==='Backspace' && !skillsInput.value && state.id.skills.length){
+      state.id.skills.pop(); renderSkillPills(); refreshBuilderClass();
+    }
+  });
+  skillsInput.addEventListener('blur', addSkillFromInput);
+
+  const qrLinkInput=document.getElementById('qr-link');
+  qrLinkInput.addEventListener('input', ()=>{ state.qrLink=qrLinkInput.value.trim()||'https://hhgoa.com'; render(); });
+
+  /* ---------- export ---------- */
+  function filenameBase(){
+    const who = state.mode==='pfp' ? 'pfp' : (state.id.name||'builder');
+    return ('hhgoa2026-'+who).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+  }
+  document.getElementById('download-btn').addEventListener('click', ()=>{
+    render();
+    canvas.toBlob(blob=>{
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a'); a.href=url; a.download=filenameBase()+'.png';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),4000);
+    }, 'image/png');
+  });
+  document.getElementById('share-btn').addEventListener('click', async ()=>{
+    render();
+    const tweetText = state.mode==='pfp'
+      ? `My PFP for Hacker House Goa 2026. #FrameInGoa`
+      : `I'm building at Hacker House Goa 2026 as a ${state.id.role||'builder'}. ${state.builderClass?('My class: '+state.builderClass+'. '):''}#FrameInGoa`;
+    canvas.toBlob(async blob=>{
+      const file=new File([blob], filenameBase()+'.png', {type:'image/png'});
+      if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+        try{ await navigator.share({files:[file], text:tweetText}); return; }catch(e){}
+      }
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a'); a.href=url; a.download=filenameBase()+'.png';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),4000);
+      window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(tweetText), '_blank');
+    }, 'image/png');
+  });
+
+  /* ---------- boot ---------- */
+  renderSkillPills();
+  waitFonts(()=>render());
+})();
+</script>
+</body>
+</html>
