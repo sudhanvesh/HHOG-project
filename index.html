@@ -658,10 +658,7 @@
   }
 
   function nowStamp(){
-    const d=new Date();
-    let h=d.getHours(); const m=String(d.getMinutes()).padStart(2,'0');
-    const ap=h>=12?'PM':'AM'; h=h%12; if(h===0)h=12;
-    return h+':'+m+' '+ap+' STUDIO';
+    return '2:47 PM STUDIO';
   }
 
   /* ---------- Builder ID render ---------- */
